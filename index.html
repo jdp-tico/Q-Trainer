@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>THE GLOOM · F3 Q Trainer</title>
+<meta name="description" content="Spin a random exercise from the F3 Exicon, then learn to lead it.">
+
+<!-- installable on a phone home screen -->
+<meta name="theme-color" content="#0B0D11">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="THE GLOOM">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230B0D11'/%3E%3Ctext x='90' y='118' font-family='Arial Black,sans-serif' font-size='96' font-weight='900' fill='%23FF6A1A' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0D11'/%3E%3Ctext x='32' y='44' font-family='Arial Black,sans-serif' font-size='38' font-weight='900' fill='%23FF6A1A' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22THE%20GLOOM%22%2C%22short_name%22%3A%22GLOOM%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230B0D11%22%2C%22theme_color%22%3A%22%230B0D11%22%2C%22start_url%22%3A%22.%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2527%2520viewBox%253D%25270%25200%2520180%2520180%2527%253E%253Crect%2520width%253D%2527180%2527%2520height%253D%2527180%2527%2520rx%253D%252740%2527%2520fill%253D%2527%25230B0D11%2527%252F%253E%253Ctext%2520x%253D%252790%2527%2520y%253D%2527118%2527%2520font-family%253D%2527Arial%2520Black%2527%2520font-size%253D%252796%2527%2520fill%253D%2527%2523FF6A1A%2527%2520text-anchor%253D%2527middle%2527%253EG%253C%252Ftext%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22180x180%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
+
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gloom:#0B0D11; --panel:#14181E; --panel2:#1B2128; --line:#2A313B;
+    --dawn:#FF6A1A; --dawnSoft:#FFB477; --ash:#ECEAE4; --muted:#8A93A0;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--gloom); color:var(--ash);
+    font-family:'Inter',system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .display{font-family:'Oswald',system-ui,sans-serif; font-weight:700;}
+  .glow{position:fixed; inset:0; pointer-events:none;
+    background:radial-gradient(120% 60% at 50% -10%, rgba(255,106,26,.13) 0%, transparent 55%);}
+  .wrap{position:relative; max-width:720px; margin:0 auto; padding:max(28px,env(safe-area-inset-top)) 20px 64px;}
+
+  header{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .eyebrow{font-size:13px; letter-spacing:.42em; color:var(--dawn); text-transform:uppercase;}
+  h1{font-size:46px; line-height:.92; margin:4px 0 0; letter-spacing:.01em;}
+  .tagline{font-size:13px; color:var(--muted); max-width:230px; margin:0; text-align:right;}
+
+  .ghost{width:100%; display:flex; align-items:center; gap:9px; padding:11px 14px;
+    background:var(--panel); border:1px solid var(--line); border-radius:11px; color:var(--ash);
+    font-size:14px; cursor:pointer; text-align:left; font-family:inherit;}
+  .count-right{margin-left:auto; color:var(--muted); font-size:12px;}
+
+  .chips{margin-top:10px; display:flex; flex-wrap:wrap; gap:7px;}
+  .chip{display:inline-flex; align-items:center; gap:5px; padding:6px 12px; border-radius:999px;
+    font-size:12.5px; cursor:pointer; font-weight:600; background:transparent; color:var(--ash);
+    border:1px solid var(--line); font-family:inherit;}
+  .chip.on{background:var(--dawn); color:#1a0d04; border-color:var(--dawn);}
+  .chip.clear{border-color:var(--dawn); color:var(--dawn);}
+
+  .spincard{background:var(--panel); border:1px solid var(--line); border-radius:18px;
+    padding:30px 22px 26px; position:relative; overflow:hidden; text-align:center; margin-top:26px;}
+  .yard{position:absolute; inset:0; opacity:.5; pointer-events:none;
+    background:repeating-linear-gradient(90deg, transparent 0 38px, rgba(42,49,59,.5) 38px 39px);}
+  .spininner{position:relative;}
+  .prompt{font-family:'Oswald',sans-serif; font-weight:700; font-size:22px; color:var(--muted);
+    margin:10px 0 24px; letter-spacing:.04em;}
+  .nextlabel{font-size:12px; letter-spacing:.32em; color:var(--dawn); text-transform:uppercase; margin-bottom:10px;}
+  .exname{font-family:'Oswald',sans-serif; font-weight:700; font-size:clamp(34px,9vw,60px);
+    line-height:.98; margin:0 0 6px; color:var(--ash); text-shadow:0 0 34px rgba(255,106,26,.2);}
+  .exname.spinning{color:var(--muted); text-shadow:none;}
+  .aka{font-size:13px; color:var(--muted); margin-bottom:4px;}
+
+  .spinbtn{margin-top:18px; width:100%; max-width:320px; padding:16px 24px; border-radius:12px;
+    border:none; cursor:pointer; background:var(--dawn); color:#1a0d04;
+    font-family:'Oswald',sans-serif; font-weight:700; font-size:20px; letter-spacing:.08em; text-transform:uppercase;
+    display:inline-flex; align-items:center; justify-content:center; gap:10px;
+    transition:transform .08s, background .15s;}
+  .spinbtn:active{transform:scale(.98);}
+  .spinbtn:disabled{background:var(--line); color:var(--muted); cursor:default;}
+  .hint{font-size:11px; color:var(--muted); margin-top:10px;}
+
+  .result{margin-top:16px; background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px;}
+  .typerow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:14px;}
+  .typebadge{display:inline-flex; align-items:center; gap:6px; padding:5px 11px; border-radius:999px;
+    background:rgba(255,106,26,.12); border:1px solid rgba(255,106,26,.33); color:var(--dawnSoft);
+    font-size:12.5px; font-weight:600;}
+  .typeblurb{color:var(--muted); font-size:12px;}
+  .desc{margin:0; font-size:15.5px; line-height:1.55; color:var(--ash);}
+  .tagrow{display:flex; flex-wrap:wrap; gap:6px; margin-top:14px;}
+  .tag{font-size:11.5px; color:var(--muted); border:1px solid var(--line); padding:3px 9px; border-radius:6px;}
+
+  .leadbtn{margin-top:18px; width:100%; padding:13px 16px; border-radius:11px; background:transparent;
+    border:1px solid var(--dawn); color:var(--dawnSoft); cursor:pointer; display:flex; align-items:center; gap:10px;
+    font-family:'Oswald',sans-serif; font-weight:700; font-size:16px; letter-spacing:.06em; text-transform:uppercase;}
+  .leadbtn.open{background:var(--panel2);}
+  .leadbtn .sp{margin-left:auto;}
+
+  .leadintro{font-size:12px; color:var(--muted); margin:14px 0 12px; line-height:1.5;}
+  .steps{list-style:none; margin:0; padding:0; display:grid; gap:10px;}
+  .step{display:flex; gap:12px; background:var(--panel2); border:1px solid var(--line); border-radius:12px; padding:12px 13px;}
+  .stepnum{flex:0 0 auto; width:28px; height:28px; border-radius:7px; background:var(--dawn); color:#1a0d04;
+    display:flex; align-items:center; justify-content:center; font-family:'Oswald',sans-serif; font-weight:700; font-size:15px;}
+  .stepcue{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--dawnSoft); margin-bottom:4px;}
+  .stepsay{font-size:15px; color:var(--ash); line-height:1.4;}
+  .stepnote{font-size:12.5px; color:var(--muted); margin-top:5px; line-height:1.45;}
+  .disclaimer{font-size:11.5px; color:var(--muted); margin-top:12px; line-height:1.5; font-style:italic;}
+
+  .tipwrap{margin-top:16px;}
+  .tips{margin-top:10px; display:grid; gap:8px;}
+  .tip{background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:12px 14px;}
+  .tiph{font-family:'Oswald',sans-serif; font-weight:700; font-size:15px; color:var(--ash); letter-spacing:.01em;}
+  .tipb{font-size:13px; color:var(--muted); margin-top:3px; line-height:1.45;}
+
+  footer{margin-top:36px; font-size:11.5px; color:var(--muted); line-height:1.6; text-align:center;}
+  .filterbar{margin-top:22px;}
+  button:focus-visible{outline:2px solid var(--dawn); outline-offset:2px;}
+  svg{flex:0 0 auto;}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="wrap" id="app"></div>
+
+<script>
+/* THE GLOOM - F3 Q Trainer
+   Exercises drawn from the F3 Nation Exicon plus the canonical staples every Q leads.
+   Calling sequence follows the standard F3 Q format.
+   count types: cadence (Q counts, PAX call reps) | hold (timed) | oyo (on your own) */
+
+const EXERCISES = [
+  {name:"Merkin", aka:"Push-up", count:"cadence", tags:["Chest","Arms"],
+   desc:"The F3 word for a push-up. From a plank with hands about shoulder-width, lower your chest toward the ground keeping a straight line from head to heels, then press back up."},
+  {name:"Burpee", count:"oyo", tags:["Burpee","Full Body"],
+   desc:"From standing, drop your hands down, kick your feet back to a plank, hit a Merkin, jump your feet back in, then explode up with a clap overhead. The signature F3 gut-check."},
+  {name:"Side Straddle Hop", aka:"Jumping Jack, SSH", count:"cadence", tags:["Cardio","Warm-Up"],
+   desc:"The F3 word for a jumping jack. The classic 4-count warm-up: feet and hands out, back in, out again, PAX call the rep on the way back."},
+  {name:"Air Squat", aka:"Squat", count:"cadence", tags:["Legs"],
+   desc:"Feet shoulder-width, sit the hips back and down until the thighs are at least parallel, chest up and weight in the heels, then drive back up tall."},
+  {name:"Mountain Climber", count:"cadence", tags:["Cardio","Core","Legs"],
+   desc:"From a high plank, drive one knee toward your chest then switch, like running in place horizontally. Each foot-strike pair is one count."},
+  {name:"Big Boy Sit-up", aka:"BBSU", count:"cadence", tags:["Core","Mary"],
+   desc:"A full sit-up. On your six, sit all the way up until your chest meets your knees, then lower back down under control."},
+  {name:"Flutter Kick", count:"cadence", tags:["Core","Mary"],
+   desc:"On your six, hands tucked under your tailbone, legs straight and heels off the deck. Alternate kicking each leg up and down in a 4-count."},
+  {name:"Imperial Walker", count:"cadence", tags:["Legs","Core"],
+   desc:"From standing, raise one knee and bring the opposite elbow to meet it, then alternate. Named for the AT-AT walk. 4-count cadence."},
+  {name:"Plank", aka:"Front Plank", count:"hold", tags:["Core","Static"],
+   desc:"Hold a straight line from head to heels on your forearms. Brace the core, don't let the hips sag or pike. Held for time, not counted."},
+  {name:"People's Chair", count:"hold", tags:["Legs","Static"],
+   desc:"Back flat against a wall, slide down until your thighs are parallel like sitting in an invisible chair. Held for time. Add air presses to taste."},
+  {name:"Carolina Dry Dock", aka:"CDD", count:"cadence", tags:["Shoulders","Arms"],
+   desc:"A pike push-up. From a downward-dog position with hips high, bend the elbows to lower the top of your head toward the ground, then press back up."},
+  {name:"Freddie Mercury", count:"cadence", tags:["Core","Mary"],
+   desc:"On your six in a partial sit-up, bicycle the legs while pumping the elbows. 4-count cadence. Named for the showman."},
+  {name:"Little Baby Crunch", aka:"LBC", count:"cadence", tags:["Core","Mary"],
+   desc:"A crunch. On your back, knees bent, curl your shoulders off the deck and back down. 4-count cadence."},
+  {name:"Bear Crawl", count:"oyo", tags:["Full Body","Transport"],
+   desc:"On hands and feet with knees hovering just off the ground, crawl forward with the hips low. Done for distance, on your own."},
+  {name:"Monkey Humper", count:"cadence", tags:["Legs"],
+   desc:"Feet wide, squat down and thrust the hips forward and back. A crowd-pleaser for the looks it earns from passing cars. 4-count."},
+  {name:"Hillbilly Walker", aka:"Hillbilly", count:"cadence", tags:["Legs","Core"],
+   desc:"Like an Imperial Walker, but kick the leg out straight and touch the toe with the opposite hand. 4-count cadence."},
+  {name:"Seal Jack", count:"cadence", tags:["Cardio","Chest","Warm-Up"],
+   desc:"A Side Straddle Hop variation: as the feet jump out, clap your hands straight out in front of you instead of overhead. 4-count."},
+  {name:"Peter Parker", count:"cadence", tags:["Core","Legs"],
+   desc:"A spider-man Mountain Climber: from plank, drive your knee toward the same-side elbow, then alternate. 4-count cadence."},
+  {name:"Diamond Merkin", count:"cadence", tags:["Chest","Arms"],
+   desc:"A Merkin with the hands together forming a diamond under your chest. Loads the triceps."},
+  {name:"Werkin", aka:"Wide-arm Merkin", count:"cadence", tags:["Chest","Arms"],
+   desc:"A Merkin with the hands set wider than the shoulders to put the work on the chest."},
+  {name:"Jump Squat", aka:"Squat Jump", count:"cadence", tags:["Legs"],
+   desc:"An Air Squat where you explode off the ground at the top, land soft, and immediately sink into the next rep."},
+  {name:"Calf Raise", count:"cadence", tags:["Legs"],
+   desc:"Stand tall, rise onto the balls of your feet and squeeze the calves at the top, then lower under control. 4-count."},
+  {name:"Heels to Heaven", count:"cadence", tags:["Core","Mary"],
+   desc:"On your six, legs straight up toward the sky. Press the heels upward, lifting the hips off the deck in a small controlled motion."},
+  {name:"WWII Sit-up", aka:"American Sit-up", count:"cadence", tags:["Core","Mary"],
+   desc:"A Big Boy Sit-up where you swing the arms overhead and forward for momentum, reaching past the feet at the top."},
+  {name:"Dolly", count:"cadence", tags:["Core","Mary"],
+   desc:"On your six with heels off the deck and legs straight, open and close the legs side to side like saloon doors. 4-count."},
+  {name:"Box Cutter", count:"cadence", tags:["Core","Mary"],
+   desc:"On your six, lift the legs and shoulders, reach one hand toward the opposite raised foot, then alternate. A core finisher."},
+  {name:"Lunge", aka:"Reverse Lunge", count:"cadence", tags:["Legs"],
+   desc:"Step back into a lunge, dropping the back knee toward the deck with both knees near 90 degrees, then drive up. Alternate legs."},
+  {name:"Copperhead Squat", count:"cadence", tags:["Legs"],
+   desc:"An Air Squat with a calf raise added at the top of every rep."},
+  {name:"Bobby Hurley", count:"oyo", tags:["Legs","Cardio"],
+   desc:"A squat into a tuck jump, reaching both hands overhead like a basketball celebration. Explosive. Worked on your own."},
+
+  {name:"1775", count:"oyo", tags:["Burpee","Legs","Routine"],
+   desc:"A three-round set: 17 Burpees, then 75 Prayer Squats, then a run (distance varies by AO). Complete at least three rounds."},
+  {name:"1984", count:"oyo", tags:["Legs","Music"],
+   desc:"Set to Van Halen's 'Jump.' Hold an air chair the whole song, and every time you hear 'jump,' fire off one Jump Squat."},
+  {name:"1st & 10", aka:"First and Ten", count:"oyo", tags:["Burpee","Cardio","Routine"],
+   desc:"On a 100-yard field marked every 10 yards: do 10 Merkins and 1 Burpee at each line, then sprint the gap. Jog back to recover."},
+  {name:"21s", count:"oyo", tags:["Routine"],
+   desc:"In unison, do 2-count Side Straddle Hops and call reps 1 through 5 out loud. Reps 6 through 21 are silent and mental, and everyone must stop together at 21."},
+  {name:"4x4s", count:"oyo", tags:["Burpee","Routine"],
+   desc:"From arms raised, burpee into a plank, then four Merkins, then four Mountain Climbers per leg. Cycle the rounds on your own."},
+  {name:"5-Minute Miracle", count:"oyo", tags:["Full Body","EMOM","Timed","Routine","Warm-Up"],
+   desc:"Each minute splits into three 20-second rounds: Merkins, then abs of the Q's choice, then legs of the Q's choice. Run it five times through."},
+  {name:"6 Inches In the Air Tonight", count:"hold", tags:["Music","Static","Mary"],
+   desc:"On your six, hold a 6-inch leg hold through the long Phil Collins build-up. When the drum fill hits, switch to max-effort Flutter Kicks."},
+  {name:"7 of Diamonds", count:"oyo", tags:["Burpee","Routine"],
+   desc:"On a large diamond (a baseball infield works). Do 7 reps at the first corner, run the bases, add a corner and a rep each lap until all four corners are loaded."},
+  {name:"7220", count:"oyo", tags:["Burpee","Legs","Full Body","Routine"],
+   desc:"On a hill, stairs, or bleachers: 7 Merkins at the bottom, run to the top, work the set, run down, rinse and repeat."},
+  {name:"Abs Are All You Need", count:"hold", tags:["Core","Music"],
+   desc:"Q plays the Beatles' 'All You Need Is Love.' Hold a crunch position (elbows and knees touching) for the whole song."},
+  {name:"Absolution", count:"cadence", tags:["Core","Routine","Mary"],
+   desc:"A combination of a Groiner, a Mahktar N'Diaye, and a Chilly Jack done on an 8-count cadence. A brutal core-and-upper-body solution."},
+  {name:"Abyss Merkin", count:"cadence", tags:["Chest"],
+   desc:"Set up with your right hand and foot on one bench and left hand and foot on a parallel bench, letting your body sink in the gap, then Merkin."},
+  {name:"Acey Doucey", count:"oyo", tags:["Routine"],
+   desc:"A ladder routine: one round of an exercise at the first stop, two reps of something at the next, and so on as you move between spots."},
+  {name:"Agassis", count:"oyo", tags:["Cardio"],
+   desc:"Tennis-court suicide sprints. Agassi had a lot of comebacks, aye."},
+  {name:"Aiken Legs", count:"oyo", tags:["Legs","AMRAP"],
+   desc:"Back to back with no rest: 20 Squats, 20 Box Jumps, 20 Lunges (10 each leg), 20 Split Jacks. Rinse and repeat."},
+  {name:"Air Drama", count:"cadence", tags:["Legs"],
+   desc:"A continuation of the Johnny Drama adding a bodyweight squat. From standing, sit the hips back, lower the torso, and work the squat in."},
+  {name:"Air Squared", count:"cadence", tags:["Legs"],
+   desc:"An air chair (People's Chair without the wall) combined with air claps, done in cadence."},
+  {name:"Airport Security", aka:"Suitcase, Metronome", count:"cadence", tags:["Back","Core","Coupon"],
+   desc:"Stand the coupon upright beside one foot. Bend to pick it up, almost set it down, back to straight, then set it down. A full 4-count."},
+  {name:"Al Gore", count:"hold", tags:["Legs","Static"],
+   desc:"Hold a squat position and reach out to hug an imaginary tree. Held until the Q calls it, often while waiting on the rest of the PAX."},
+  {name:"Alabama Ass-Kickers", aka:"Ass-Kickers", count:"cadence", tags:["Legs","Core"],
+   desc:"On all fours, kick each leg up and back individually. 4-count per leg: up, extend, back to up, down."},
+  {name:"Alarm Clock", count:"cadence", tags:["Full Body"],
+   desc:"A scalable reverse burpee for those who can't hit a standard one. From standing, drop to a squat, lower back, and roll up to reset."},
+  {name:"Albatross Wings", count:"cadence", tags:["Warm-Up","Shoulders"],
+   desc:"20 forward arm circles, hold, 20 backward arm circles, hold, 20 seal claps, hold, 20 overhead claps. Everything in cadence."},
+  {name:"All About The Benjamins", count:"oyo", tags:["Routine"],
+   desc:"Like 11s, but each part adds to 100 (hence the Benjamins). Done on your own with the Q's choice of two exercises."},
+  {name:"Alligator Merkin", count:"oyo", tags:["Transport","Arms","Chest"],
+   desc:"A walking Merkin: step your hands forward on each rep so you travel across the deck, like an alligator that does push-ups."},
+  {name:"Alphabet", aka:"ABCs", count:"oyo", tags:["Core"],
+   desc:"On your six with feet elevated in a 6-inch hold, spell out the entire alphabet with your feet. Capital letters preferred."},
+  {name:"Alpine Mountain Climbers", count:"cadence", tags:["Legs","Core","Cardio","Full Body"],
+   desc:"A slower Mountain Climber: from a high plank, step the foot farther forward and wider than a standard climber, planting it flat beside the hand."},
+  {name:"Alternating Shoulder Taps", count:"cadence", tags:["Core"],
+   desc:"From the Merkin (plank) position, tap your left hand to your right shoulder and right hand to left shoulder, keeping the hips quiet."},
+  {name:"Alternating Side Squats", count:"cadence", tags:["Legs"],
+   desc:"Start with feet together, step one leg out into a side squat, return to center, then repeat on the other side."},
+  {name:"American Hammer", aka:"Russian Twist", count:"cadence", tags:["Core","Coupon","Mary"],
+   desc:"On your six in a partial sit-up, twist the torso side to side, tapping the deck (or a coupon) by each hip."},
+  {name:"Angle Grinder", count:"cadence", tags:["Chest","Core"],
+   desc:"From plank, pike the body up while touching a hand to the opposite knee, then lower into a Merkin, and repeat to the other side."},
+  {name:"Apollo Creed Burpee", count:"oyo", tags:["Burpee","Full Body"],
+   desc:"A one-armed Burpee, straight out of the Rocky III training montage."},
+  {name:"Apolo Anton Oh No!", count:"cadence", tags:["Legs","Cardio","Coupon"],
+   desc:"A speed-skater movement, encouraging a full leg kick behind, while holding a coupon and swinging it side to side. In cadence."},
+  {name:"Apolo Ohno", aka:"Speed Skaters", count:"cadence", tags:["Legs","Cardio"],
+   desc:"Speed-skater-style lateral hops, bounding side to side."},
+  {name:"Around the World", aka:"Halo, Orbits", count:"cadence", tags:["Arms","Shoulders","Core","Coupon"],
+   desc:"Grab the coupon by its middle cross-section and rotate the block all the way around your head."},
+  {name:"Aura Farmer", aka:"Aura Harvest", count:"cadence", tags:["Arms","Shoulders","Core","Full Body","Warm-Up"],
+   desc:"Feet shoulder-width and planted, hips stable. Rotate the torso, raising both arms overhead into a defiant Y, then to the other side."},
+  {name:"Aussie Burpees", count:"oyo", tags:["Burpee","Full Body"],
+   desc:"A Groiner with a small hop added. The Burpee variation made famous by a 60-minute world-record run."},
+  {name:"Australian Mountain Climber", aka:"Aussie Mountain Climber", count:"cadence", tags:["Shoulders","Core"],
+   desc:"Get into the Balls-to-the-Wall (handstand against a wall) position and run Mountain Climbers, typically in cadence."},
+  {name:"Australian Snow Angels", count:"cadence", tags:["Core","Back"],
+   desc:"Prone like a Superman, arms and legs extended as high as possible, sweep them in a snow-angel motion on a 4-count."}
+];
+
+const COUNT_META = {
+  cadence:{label:"In Cadence", blurb:"Q counts the movements, PAX call the reps"},
+  hold:{label:"Timed Hold", blurb:"Held for time, no rep count"},
+  oyo:{label:"On Your Own", blurb:"PAX work at their own pace"}
+};
+
+const Q_TIPS = [
+  ["Don't Q it if you can't do it.", "Model the form yourself. If your own form breaks down, halt the exercise."],
+  ["Be loud. You're in charge.", "Mumbling gives away your authority. Speak so the back row hears you in the dark."],
+  ["Practice the cadence out loud first.", "Counting while you're winded is hard. Run through it in the car before you launch."],
+  ["Watch the 6.", "If more than 10 to 20 percent of the PAX have lost form, halt and move on. Leave no man behind."],
+  ["Inflection ends the set.", "Raise your voice on the last rep so the PAX know to call the halt. No need to announce the number."],
+  ["Keep the Weinke simple.", "Fewer moving parts is better. Familiar beats clever, especially with FNGs present."],
+  ["Modify, don't prescribe.", "There's no single right way. Let men scale up or down as they need."]
+];
+
+const ALL_TAGS = Array.from(new Set(EXERCISES.flatMap(e => e.tags))).sort();
+
+const ICON = {
+  shuffle:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4l3 3-3 3"/><path d="M18 20l3-3-3-3"/><path d="M3 7h3a5 5 0 0 1 4 2"/><path d="M14 15a5 5 0 0 0 4 2h3"/><path d="M21 7h-3a5 5 0 0 0-4 2l-6 8a5 5 0 0 1-4 2H3"/></svg>',
+  mega:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>',
+  list:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 12H3"/><path d="M16 6H3"/><path d="M16 18H3"/><path d="m18 9 3-3-3-3"/></svg>',
+  down:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+  right:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+  x:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>'
+};
+
+const state = {
+  selectedTags:new Set(), current:null, spinning:false, displayName:"",
+  leadOpen:false, tipsOpen:false, filterOpen:false
+};
+let spinTimer=null;
+const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function pool(){
+  if(state.selectedTags.size===0) return EXERCISES;
+  return EXERCISES.filter(e => e.tags.some(t => state.selectedTags.has(t)));
+}
+function pickRandom(){ const p=pool(); return p.length? p[Math.floor(Math.random()*p.length)] : null; }
+
+function buildScript(ex){
+  const common=[
+    {cue:"Name it", say:'"The next exercise is\u2026"  [pause]  "'+ex.name+'!"',
+     note:"Say it loud and clear. The PAX repeat the name back so you know they heard it."},
+    {cue:"Set the position", say:'"Starting position\u2026"  [pause]  "Move!"',
+     note:'"Move" gets them into position. It is NOT the signal to start exercising yet. Pause between the info and the command.'}
+  ];
+  if(ex.count==="cadence"){
+    return common.concat([
+      {cue:"Call the count", say:'"In cadence\u2026"  [pause]  "Exercise!"',
+       note:'The PAX repeat "In cadence." "Exercise!" is the go signal.'},
+      {cue:"Count it", say:'You: "1\u20262\u20263"   PAX: "ONE!"   You: "1\u20262\u20263"   PAX: "TWO!"',
+       note:"Each number rides one movement of the exercise. The PAX call the rep number where the 4 would be. Stay in rhythm so everyone moves together."},
+      {cue:"Signal the finish", say:'On the last rep, lift your inflection, and the PAX call "HALT!"',
+       note:"Changing your voice on the final rep tells the PAX it's the last one. Let your tone do the work."},
+      {cue:"Recover", say:'"Recover!"',
+       note:"The set is done. Catch a breath, then call the next one."}
+    ]);
+  }
+  if(ex.count==="hold"){
+    return common.concat([
+      {cue:"Start the hold", say:'"We\'re holding this\u2026"  [pause]  "Down!"',
+       note:"No rep count on a hold. Get everyone locked into position together."},
+      {cue:"Coach the gloom", say:"Keep talking. Count up slowly, call out form, or run a Moleskin.",
+       note:"A silent hold feels twice as long. Your voice keeps the PAX in it. Watch the 6 and pull anyone whose form has collapsed."},
+      {cue:"Recover", say:'"Recover!"',
+       note:"Release them together so it's a shared finish, not a slow trickle."}
+    ]);
+  }
+  return common.concat([
+    {cue:"Lay out the work", say:"Spell out the reps, rounds, and the route before they start.",
+     note:"Keep it simple. If it takes more than a sentence or two to explain, the PAX will get lost. Demo a rep if it's an odd one."},
+    {cue:"Send them", say:'"On your own\u2026"  [pause]  "Go!"',
+     note:"They work at their own pace. You don't count, you coach."},
+    {cue:"Watch the 6 & rally", say:"Finish your own work, then turn back and pull in the last man.",
+     note:"Leave no man behind. The PAX who finish first encourage the ones still working. Call the next move once the 6 is in."}
+  ]);
+}
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function render(){
+  const p = pool();
+  const c = state.current;
+  const cm = c ? COUNT_META[c.count] : null;
+
+  let chipsHtml="";
+  if(state.filterOpen){
+    chipsHtml = '<div class="chips">';
+    if(state.selectedTags.size>0)
+      chipsHtml += '<button class="chip clear" data-act="clear">'+ICON.x+' Clear</button>';
+    chipsHtml += ALL_TAGS.map(t =>
+      '<button class="chip '+(state.selectedTags.has(t)?'on':'')+'" data-act="tag" data-tag="'+esc(t)+'">'+esc(t)+'</button>'
+    ).join("");
+    chipsHtml += '</div>';
+  }
+
+  let spinBody="";
+  if(!c && !state.spinning){
+    spinBody = '<div class="prompt">READY TO CALL A PLAY?</div>';
+  } else {
+    spinBody =
+      '<div class="nextlabel">'+(state.spinning?"Calling\u2026":"The next exercise is")+'</div>'+
+      '<div class="exname '+(state.spinning?'spinning':'')+'" id="exname">'+esc(state.displayName)+'</div>'+
+      (c && !state.spinning && c.aka ? '<div class="aka">aka '+esc(c.aka)+'</div>' : '');
+  }
+  const spinDisabled = state.spinning || p.length===0;
+  const spinCard =
+    '<div class="spincard"><div class="yard"></div><div class="spininner">'+
+      spinBody+
+      '<button class="spinbtn" data-act="spin" '+(spinDisabled?'disabled':'')+'>'+ICON.shuffle+(c?'Spin Again':'Spin')+'</button>'+
+      '<div class="hint">'+(p.length===0?'No exercises match your filters':'Tip: tap Spin or hit the spacebar')+'</div>'+
+    '</div></div>';
+
+  let resultHtml="";
+  if(c && !state.spinning){
+    let leadHtml="";
+    if(state.leadOpen){
+      const steps = buildScript(c).map((s,i)=>
+        '<li class="step"><div class="stepnum">'+(i+1)+'</div><div>'+
+          '<div class="stepcue">'+esc(s.cue)+'</div>'+
+          '<div class="stepsay">'+esc(s.say)+'</div>'+
+          '<div class="stepnote">'+esc(s.note)+'</div>'+
+        '</div></li>'
+      ).join("");
+      leadHtml =
+        '<div class="leadintro">Read this top to bottom out loud. The PAX repeat what you call back to you, that is how you know they are with you.</div>'+
+        '<ol class="steps">'+steps+'</ol>'+
+        '<div class="disclaimer">First time leading? Give the disclaimer before you launch: this is a free, peer-led, volunteer workout, and you are not a professional. Modify as needed.</div>';
+    }
+    resultHtml =
+      '<div class="result">'+
+        '<div class="typerow"><span class="typebadge">'+ICON.mega+esc(cm.label)+'</span><span class="typeblurb">'+esc(cm.blurb)+'</span></div>'+
+        '<p class="desc">'+esc(c.desc)+'</p>'+
+        '<div class="tagrow">'+c.tags.map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>'+
+        '<button class="leadbtn '+(state.leadOpen?'open':'')+'" data-act="lead">'+ICON.mega+
+          (state.leadOpen?'Hide the call sheet':'Teach me to lead this')+
+          '<span class="sp">'+(state.leadOpen?ICON.down:ICON.right)+'</span></button>'+
+        leadHtml+
+      '</div>';
+  }
+
+  let tipsHtml="";
+  if(state.tipsOpen){
+    tipsHtml = '<div class="tips">'+Q_TIPS.map(t=>
+      '<div class="tip"><div class="tiph">'+esc(t[0])+'</div><div class="tipb">'+esc(t[1])+'</div></div>'
+    ).join("")+'</div>';
+  }
+
+  document.getElementById("app").innerHTML =
+    '<header><div><div class="eyebrow display">F3 \u00b7 Q Trainer</div>'+
+      '<h1 class="display">THE GLOOM</h1></div>'+
+      '<p class="tagline">Spin a random exercise from the Exicon. Then learn to call it.</p></header>'+
+    '<div class="filterbar"><button class="ghost" data-act="filter">'+ICON.list+
+      (state.selectedTags.size?state.selectedTags.size+' filter'+(state.selectedTags.size>1?'s':'')+' on':'Filter the deck')+
+      (state.filterOpen?ICON.down:ICON.right)+
+      '<span class="count-right">'+p.length+' in play</span></button>'+chipsHtml+'</div>'+
+    spinCard+
+    resultHtml+
+    '<div class="tipwrap"><button class="ghost" data-act="tips">'+ICON.mega+'The Q fundamentals'+
+      (state.tipsOpen?ICON.down:ICON.right)+'</button>'+tipsHtml+'</div>'+
+    '<footer>Exercises drawn from the F3 Nation Exicon. Calling sequence follows the standard F3 Q format.'+
+      '<br>Fitness \u00b7 Fellowship \u00b7 Faith.</footer>';
+}
+
+function spin(){
+  const p = pool();
+  if(p.length===0 || state.spinning) return;
+  state.leadOpen=false;
+  const final = pickRandom();
+  if(reducedMotion){
+    state.current=final; state.displayName=final.name; render(); return;
+  }
+  state.spinning=true;
+  let elapsed=0, delay=45;
+  render();
+  const step=()=>{
+    const el=document.getElementById("exname");
+    if(el) el.textContent = pickRandom().name;
+    elapsed+=delay; delay+=14;
+    if(elapsed<850){ spinTimer=setTimeout(step, delay); }
+    else { state.spinning=false; state.current=final; state.displayName=final.name; render(); }
+  };
+  step();
+}
+
+document.getElementById("app").addEventListener("click", (e)=>{
+  const t = e.target.closest("[data-act]");
+  if(!t) return;
+  const act = t.getAttribute("data-act");
+  if(act==="spin") spin();
+  else if(act==="filter"){ state.filterOpen=!state.filterOpen; render(); }
+  else if(act==="tips"){ state.tipsOpen=!state.tipsOpen; render(); }
+  else if(act==="lead"){ state.leadOpen=!state.leadOpen; render(); }
+  else if(act==="clear"){ state.selectedTags.clear(); render(); }
+  else if(act==="tag"){
+    const tag=t.getAttribute("data-tag");
+    if(state.selectedTags.has(tag)) state.selectedTags.delete(tag); else state.selectedTags.add(tag);
+    render();
+  }
+});
+
+window.addEventListener("keydown",(e)=>{
+  if(e.code==="Space"){
+    const tag=(e.target&&e.target.tagName)||"";
+    if(tag==="INPUT"||tag==="TEXTAREA"||tag==="BUTTON") return;
+    e.preventDefault(); spin();
+  }
+});
+
+render();
+</script>
+</body>
+</html>
