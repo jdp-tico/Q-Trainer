@@ -11,8 +11,9 @@ sequence so any PAX can step up and Q.
 - Renders by rebuilding the `#app` innerHTML on each state change, with click
   handling via event delegation on `#app`.
 - Installable to a phone home screen (web app meta tags + inline manifest).
-- Two modes, switched by the tabs under the header: Spin (random exercise plus a
-  call sheet) and Build a Q (assemble a weinke, saved in localStorage).
+- Three modes, switched by the tabs under the header: Spin (random exercise plus
+  a call sheet), Browse (search the Exicon by name or filter by tag, tap through
+  to the full detail), and Build a Q (assemble a weinke, saved in localStorage).
 
 ## Hard constraints (do not break these)
 

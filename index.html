@@ -114,9 +114,10 @@
 
   /* mode tabs */
   .tabs{display:flex; gap:8px; margin-top:18px;}
-  .tab{flex:1; padding:11px 12px; border-radius:11px; border:1px solid var(--line); background:var(--panel);
-    color:var(--muted); font-family:'Oswald',sans-serif; font-weight:700; font-size:14px; letter-spacing:.06em;
-    text-transform:uppercase; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;}
+  .tab{flex:1; padding:11px 8px; border-radius:11px; border:1px solid var(--line); background:var(--panel);
+    color:var(--muted); font-family:'Oswald',sans-serif; font-weight:700; font-size:13.5px; letter-spacing:.04em;
+    text-transform:uppercase; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; white-space:nowrap;}
+  .tab svg{width:15px; height:15px;}
   .tab.on{background:var(--dawn); color:#1a0d04; border-color:var(--dawn);}
 
   /* action buttons on the result card */
@@ -168,6 +169,33 @@
   .wblock .wlabel{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--dawn); margin-bottom:6px;}
   .wline{font-size:14.5px; color:var(--ash); line-height:1.5;}
   .wline .wn{color:var(--dawnSoft); font-weight:600;}
+
+  /* browse / search the exicon */
+  .browsebar{margin-top:18px;}
+  .searchwrap{position:relative; display:flex; align-items:center;}
+  .searchwrap > svg{position:absolute; left:13px; color:var(--muted);}
+  .browsesearch{width:100%; padding:13px 40px 13px 38px; border-radius:11px; border:1px solid var(--line);
+    background:var(--panel); color:var(--ash); font-family:inherit; font-size:15px;}
+  .browsesearch::placeholder{color:var(--muted);}
+  .searchx{position:absolute; right:8px; background:transparent; border:none; color:var(--muted);
+    cursor:pointer; padding:6px; display:flex;}
+  .browsecount{margin-top:11px; font-size:12px; color:var(--muted); letter-spacing:.02em;}
+  .exlist{margin-top:14px; display:grid; gap:9px;}
+  .exrow{text-align:left; background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:13px 14px; color:var(--ash); cursor:pointer; font-family:inherit; display:block; width:100%;}
+  .exrow:active{background:var(--panel2);}
+  .exrowtop{display:flex; align-items:baseline; gap:10px;}
+  .exname2{font-family:'Oswald',sans-serif; font-weight:700; font-size:17px; letter-spacing:.01em;}
+  .excount{margin-left:auto; flex:0 0 auto; font-size:11px; color:var(--dawnSoft);
+    border:1px solid rgba(255,106,26,.33); background:rgba(255,106,26,.1); padding:2px 8px; border-radius:999px;}
+  .exaka{font-size:12px; color:var(--muted); margin-top:3px;}
+  .extags{display:flex; flex-wrap:wrap; gap:5px; margin-top:8px;}
+  .extag{font-size:11px; color:var(--muted); border:1px solid var(--line); padding:2px 8px; border-radius:6px;}
+  .backbtn{background:transparent; border:none; color:var(--dawnSoft); cursor:pointer; font-family:inherit;
+    font-size:14px; font-weight:600; padding:0; margin-bottom:14px;}
+  .detailname{font-family:'Oswald',sans-serif; font-weight:700; font-size:clamp(28px,7vw,40px);
+    line-height:1.02; margin:0 0 14px;}
+  .detailname .aka{font-size:13px; font-weight:400;}
 
   /* toast */
   #toast{position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px);
@@ -1021,7 +1049,8 @@ const ICON = {
   down:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
   right:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
   x:'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
-  share:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>'
+  share:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>',
+  search:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>'
 };
 
 const Q_SECTIONS = [
@@ -1038,7 +1067,8 @@ const state = {
   view:"spin",
   selectedTags:new Set(), current:null, spinning:false, displayName:"",
   leadOpen:false, tipsOpen:false, filterOpen:false,
-  qPlan:loadPlan(), pickerSection:null, pickerQuery:"", pickerTags:new Set()
+  qPlan:loadPlan(), pickerSection:null, pickerQuery:"", pickerTags:new Set(),
+  browseQuery:"", browseTags:new Set(), browseSelected:null
 };
 let spinTimer=null;
 const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1142,17 +1172,55 @@ function planText(){
 /* ---------- render ---------- */
 function render(){
   if(state.view==="build"){ renderBuild(); return; }
+  if(state.view==="browse"){ renderBrowse(); return; }
   renderSpin();
 }
 
 function headerHtml(){
   return '<header><div><div class="eyebrow display">F3 Crown Valley · Q Trainer</div>'+
     '<h1 class="display">THE GLOOM</h1></div>'+
-    '<p class="tagline">Spin a move and learn to call it, or build a full Q.</p></header>'+
+    '<p class="tagline">Spin a move, browse the Exicon, or build a full Q.</p></header>'+
     '<div class="tabs">'+
       '<button class="tab '+(state.view==="spin"?"on":"")+'" data-act="nav" data-view="spin">'+ICON.shuffle+'Spin</button>'+
+      '<button class="tab '+(state.view==="browse"?"on":"")+'" data-act="nav" data-view="browse">'+ICON.search+'Browse</button>'+
       '<button class="tab '+(state.view==="build"?"on":"")+'" data-act="nav" data-view="build">'+ICON.list+'Build a Q</button>'+
     '</div>';
+}
+
+// the shared exercise detail card (used by Spin result and Browse detail)
+function detailCard(c, opts){
+  opts = opts || {};
+  const cm = COUNT_META[c.count];
+  let leadHtml="";
+  if(state.leadOpen){
+    const steps = buildScript(c).map((s,i)=>
+      '<li class="step"><div class="stepnum">'+(i+1)+'</div><div>'+
+        '<div class="stepcue">'+esc(s.cue)+'</div>'+
+        '<div class="stepsay">'+esc(s.say)+'</div>'+
+        '<div class="stepnote">'+esc(s.note)+'</div>'+
+      '</div></li>'
+    ).join("");
+    leadHtml =
+      '<div class="leadintro">Read this top to bottom out loud. The PAX repeat what you call back to you, that is how you know they are with you.</div>'+
+      '<ol class="steps">'+steps+'</ol>'+
+      '<div class="disclaimer">First time leading? Give the disclaimer before you launch: this is a free, peer-led, volunteer workout, and you are not a professional. Modify as needed.</div>';
+  }
+  const dn = ' data-name="'+esc(c.name)+'"';
+  return '<div class="result">'+
+    (opts.back?'<button class="backbtn" data-act="browseback">← Back to the list</button>':'')+
+    (opts.title?'<div class="detailname display">'+esc(c.name)+(c.aka?' <span class="aka">aka '+esc(c.aka)+'</span>':'')+'</div>':'')+
+    '<div class="typerow"><span class="typebadge">'+ICON.mega+esc(cm.label)+'</span><span class="typeblurb">'+esc(cm.blurb)+'</span></div>'+
+    '<p class="desc">'+esc(c.desc)+'</p>'+
+    '<div class="tagrow">'+c.tags.map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>'+
+    '<div class="actions">'+
+      '<button class="actbtn" data-act="addto"'+dn+'>'+ICON.list+'Add to my Q</button>'+
+      '<button class="actbtn" data-act="share"'+dn+'>'+ICON.share+'Share this move</button>'+
+    '</div>'+
+    '<button class="actbtn lead '+(state.leadOpen?'open':'')+'" style="width:100%;margin-top:9px;" data-act="lead">'+ICON.mega+
+      (state.leadOpen?'Hide the call sheet':'Teach me to lead this')+
+      '<span class="sp">'+(state.leadOpen?ICON.down:ICON.right)+'</span></button>'+
+    leadHtml+
+  '</div>';
 }
 function footerHtml(){
   return '<footer>Exercises drawn from the F3 Nation Exicon. Calling sequence follows the standard F3 Q format.'+
@@ -1194,34 +1262,7 @@ function renderSpin(){
 
   let resultHtml="";
   if(c && !state.spinning){
-    let leadHtml="";
-    if(state.leadOpen){
-      const steps = buildScript(c).map((s,i)=>
-        '<li class="step"><div class="stepnum">'+(i+1)+'</div><div>'+
-          '<div class="stepcue">'+esc(s.cue)+'</div>'+
-          '<div class="stepsay">'+esc(s.say)+'</div>'+
-          '<div class="stepnote">'+esc(s.note)+'</div>'+
-        '</div></li>'
-      ).join("");
-      leadHtml =
-        '<div class="leadintro">Read this top to bottom out loud. The PAX repeat what you call back to you, that is how you know they are with you.</div>'+
-        '<ol class="steps">'+steps+'</ol>'+
-        '<div class="disclaimer">First time leading? Give the disclaimer before you launch: this is a free, peer-led, volunteer workout, and you are not a professional. Modify as needed.</div>';
-    }
-    resultHtml =
-      '<div class="result">'+
-        '<div class="typerow"><span class="typebadge">'+ICON.mega+esc(cm.label)+'</span><span class="typeblurb">'+esc(cm.blurb)+'</span></div>'+
-        '<p class="desc">'+esc(c.desc)+'</p>'+
-        '<div class="tagrow">'+c.tags.map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</div>'+
-        '<div class="actions">'+
-          '<button class="actbtn" data-act="addto">'+ICON.list+'Add to my Q</button>'+
-          '<button class="actbtn" data-act="share">'+ICON.share+'Share this move</button>'+
-        '</div>'+
-        '<button class="actbtn lead '+(state.leadOpen?'open':'')+'" style="width:100%;margin-top:9px;" data-act="lead">'+ICON.mega+
-          (state.leadOpen?'Hide the call sheet':'Teach me to lead this')+
-          '<span class="sp">'+(state.leadOpen?ICON.down:ICON.right)+'</span></button>'+
-        leadHtml+
-      '</div>';
+    resultHtml = detailCard(c);
   }
 
   let tipsHtml="";
@@ -1242,6 +1283,64 @@ function renderSpin(){
     '<div class="tipwrap"><button class="ghost" data-act="tips">'+ICON.mega+'The Q fundamentals'+
       (state.tipsOpen?ICON.down:ICON.right)+'</button>'+tipsHtml+'</div>'+
     footerHtml();
+}
+
+function renderBrowse(){
+  // detail view for a selected move
+  if(state.browseSelected){
+    const c = findByName(state.browseSelected);
+    if(c){
+      document.getElementById("app").innerHTML =
+        headerHtml() + detailCard(c, {back:true, title:true}) + footerHtml();
+      return;
+    }
+    state.browseSelected = null;
+  }
+
+  const q = state.browseQuery.trim().toLowerCase();
+  const matches = EXERCISES.filter(e=>{
+    if(state.browseTags.size && !e.tags.some(t=>state.browseTags.has(t))) return false;
+    if(!q) return true;
+    return e.name.toLowerCase().includes(q) || (e.aka && e.aka.toLowerCase().includes(q));
+  });
+  const CAP = 200;
+  const shown = matches.slice(0, CAP);
+
+  const tagChips = ALL_TAGS.map(t=>
+    '<button class="chip '+(state.browseTags.has(t)?'on':'')+'" data-act="btag" data-tag="'+esc(t)+'">'+esc(t)+'</button>'
+  ).join("");
+  const active = state.browseQuery.trim() || state.browseTags.size;
+
+  const listHtml = shown.length
+    ? '<div class="exlist">'+shown.map(e=>
+        '<button class="exrow" data-act="browseopen" data-name="'+esc(e.name)+'">'+
+          '<div class="exrowtop"><span class="exname2">'+esc(e.name)+'</span>'+
+            '<span class="excount">'+esc(COUNT_META[e.count].label)+'</span></div>'+
+          (e.aka?'<div class="exaka">aka '+esc(e.aka)+'</div>':'')+
+          (e.tags.length?'<div class="extags">'+e.tags.map(t=>'<span class="extag">'+esc(t)+'</span>').join("")+'</div>':'')+
+        '</button>'
+      ).join("")+'</div>'
+    : '<div class="qempty">No moves match. Try a different word or clear the tags.</div>';
+
+  document.getElementById("app").innerHTML =
+    headerHtml()+
+    '<div class="browsebar">'+
+      '<div class="searchwrap">'+ICON.search+
+        '<input class="browsesearch" id="browseInput" data-act="bsearch" placeholder="Search 807 moves by name…" value="'+esc(state.browseQuery)+'" autocomplete="off">'+
+        (state.browseQuery?'<button class="searchx" data-act="bclearq" aria-label="Clear search">'+ICON.x+'</button>':'')+
+      '</div>'+
+      '<div class="chips" style="margin-top:11px;">'+
+        (active?'<button class="chip clear" data-act="bclear">'+ICON.x+' Clear all</button>':'')+
+        tagChips+
+      '</div>'+
+      '<div class="browsecount">'+matches.length+' move'+(matches.length===1?'':'s')+
+        (matches.length>CAP?' · showing first '+CAP:'')+'</div>'+
+    '</div>'+
+    listHtml+
+    footerHtml();
+
+  const inp=document.getElementById("browseInput");
+  if(inp){ inp.focus(); const v=inp.value; inp.value=""; inp.value=v; }
 }
 
 function renderBuild(){
@@ -1353,7 +1452,7 @@ document.getElementById("app").addEventListener("click", (e)=>{
   if(!t) return;
   const act = t.getAttribute("data-act");
   if(act==="spin") spin();
-  else if(act==="nav"){ state.view=t.getAttribute("data-view"); state.pickerSection=null; render(); }
+  else if(act==="nav"){ state.view=t.getAttribute("data-view"); state.pickerSection=null; state.browseSelected=null; state.leadOpen=false; render(); }
   else if(act==="filter"){ state.filterOpen=!state.filterOpen; render(); }
   else if(act==="tips"){ state.tipsOpen=!state.tipsOpen; render(); }
   else if(act==="lead"){ state.leadOpen=!state.leadOpen; render(); }
@@ -1363,12 +1462,21 @@ document.getElementById("app").addEventListener("click", (e)=>{
     if(state.selectedTags.has(tag)) state.selectedTags.delete(tag); else state.selectedTags.add(tag);
     render();
   }
-  else if(act==="share"){ if(state.current) shareExercise(state.current); }
+  else if(act==="browseopen"){ state.browseSelected=t.getAttribute("data-name"); state.leadOpen=false; render(); window.scrollTo(0,0); }
+  else if(act==="browseback"){ state.browseSelected=null; state.leadOpen=false; render(); }
+  else if(act==="btag"){
+    const tag=t.getAttribute("data-tag");
+    if(state.browseTags.has(tag)) state.browseTags.delete(tag); else state.browseTags.add(tag);
+    render();
+  }
+  else if(act==="bclear"){ state.browseQuery=""; state.browseTags.clear(); render(); }
+  else if(act==="bclearq"){ state.browseQuery=""; render(); }
+  else if(act==="share"){ const ex=t.getAttribute("data-name")?findByName(t.getAttribute("data-name")):state.current; if(ex) shareExercise(ex); }
   else if(act==="addto"){
-    if(state.current){
-      state.view="build"; state.pickerSection="thang";
-      state.qPlan.push({sec:"thang", name:state.current.name, count:state.current.count, note:""});
-      savePlan(); state.pickerSection=null; render(); toast("Added to The Thang");
+    const ex=t.getAttribute("data-name")?findByName(t.getAttribute("data-name")):state.current;
+    if(ex){
+      state.qPlan.push({sec:"thang", name:ex.name, count:ex.count, note:""});
+      savePlan(); toast("Added "+ex.name+" to The Thang");
     }
   }
   else if(act==="addopen"){ state.pickerSection=t.getAttribute("data-sec"); state.pickerQuery=""; render(); }
@@ -1398,7 +1506,10 @@ document.getElementById("app").addEventListener("click", (e)=>{
 
 document.getElementById("app").addEventListener("input",(e)=>{
   const t=e.target.closest("[data-act]");
-  if(t && t.getAttribute("data-act")==="psearch"){ state.pickerQuery=t.value; render(); }
+  if(!t) return;
+  const act=t.getAttribute("data-act");
+  if(act==="psearch"){ state.pickerQuery=t.value; render(); }
+  else if(act==="bsearch"){ state.browseQuery=t.value; render(); }
 });
 
 window.addEventListener("keydown",(e)=>{

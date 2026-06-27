@@ -4,6 +4,8 @@ F3 Crown Valley Q Trainer. A single self-contained web app, no build step.
 
 - **Spin** a random move from 807 real F3 Exicon exercises, then get a step-by-step
   call sheet so any PAX can step up and Q it.
+- **Browse** the whole Exicon: search by name or filter by tag, then tap through to
+  the full description and call sheet.
 - **Build a Q**: string together a warm-up, the thang, a Mary, and a finisher into
   a weinke you can read top to bottom. It saves on your device.
 - **Share** any move (or a built weinke) by text or link. A shared link opens
